@@ -11,4 +11,6 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='refresh_token'),
 
     path('user/create/', CreateUserView.as_view(), name='create_user'),
+    path('user/hotel/edit/', EditHotelInformationView.as_view(), name='edit_hotel_information'),
+    path('user/hotel/contact/', ManageHotelContactView.as_view(), name="manage_hotel_contact"),
 ]
