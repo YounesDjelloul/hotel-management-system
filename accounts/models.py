@@ -72,7 +72,7 @@ class HotelContact(models.Model):
 	content      = models.CharField(max_length=50)
 
 	def __str__(self):
-		return str(hotel) + " - " + str(contact_type)
+		return str(self.hotel) + " - " + str(self.contact_type)
 
 
 class HotelPhoto(models.Model):
