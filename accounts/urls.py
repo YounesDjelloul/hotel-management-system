@@ -12,4 +12,5 @@ urlpatterns = [
 
     path('user/create/', CreateUserView.as_view(), name='create_user'),
     path('hotel/update/', UpdateHotelInformationView.as_view(), name='update_hotel_information'),
+    path("hotel/get/", GetHotelInformationView.as_view(), name="get_hotel_information")
 ]

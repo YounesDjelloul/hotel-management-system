@@ -3,8 +3,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .serializers import *
+from accounts.serializers import HotelSerializer
 import json
 from django.http import Http404
+from project.custom_pagination import CustomPaginator
+from django.db.models import Q
 
 # Create your views here.
 
@@ -308,3 +311,38 @@ class ManageHotelRoomExtension(APIView):
 		extension.delete()
 
 		return Response("Room Extension Deleted Successfully", status=200)
+
+
+class ValidateHotelReservation(APIView):
+
+	def post(self, request, id):
+
+		if not id:
+			return Response("Reservation ID is required")
+
+		reservation = HotelReservation.objects.get(id=id)
+
+		reservation.status = True
+		reservation.save()
+
+		return Response("Reservation Validated Successfully", status=200)
+
+class GetHotelsView(APIView):
+
+	serializer_class = HotelSerializer
+
+	def get(self, request):
+
+		if not request.GET.get("city"):
+			return Response("City is required.", status=400)
+
+		query = Hotel.objects.filter(Q(city__icontains=request.GET.get("city")))
+
+		if request.GET.get("max_price"):
+			query = query.filter(hotelroomtype__price__lte=request.GET.get("max_price"))
+
+		paginator = CustomPaginator()
+
+		response  = paginator.generate_response(sorted(query), self.serializer_class, request)
+
+		return response

@@ -33,3 +33,15 @@ class UpdateHotelInformationView(APIView):
 		serializer.save(user=request.user)
 
 		return Response("Information Updated Successfully", status=202)
+
+class GetHotelInformationView(APIView):
+
+	serializer_class   = HotelSerializer
+	permission_classes = [IsAuthenticated]
+
+	def get(self, request):
+
+		query      = Hotel.objects.get(user=request.user)
+		serializer = self.serializer_class(query)
+
+		return Response(serializer.data, status=200)

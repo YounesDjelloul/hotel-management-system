@@ -38,7 +38,7 @@ class HotelSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model  = Hotel
-		fields = ['id', 'name', 'stars', 'lat', 'lng', 'description']
+		fields = ['id', 'name', 'stars', 'lat', 'lng', "city", 'description']
 
 	def validate(self, attrs):
 

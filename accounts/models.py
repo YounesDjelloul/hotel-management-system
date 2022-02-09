@@ -46,6 +46,7 @@ class Hotel(models.Model):
 	stars          = models.PositiveIntegerField(null=True, blank=True)
 	lat            = models.DecimalField(max_digits=8, decimal_places=4, null=True, blank=True)
 	lng            = models.DecimalField(max_digits=8, decimal_places=4, null=True, blank=True)
+	city           = models.CharField(max_length=100, default="")
 	description    = models.TextField(default='', null=True, blank=True)
 
 	def __str__(self):

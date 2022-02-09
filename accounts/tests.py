@@ -111,3 +111,16 @@ class TestUpdateHotelInformation:
 
 		assert response.status_code == 400
 		assert Hotel.objects.get(id=1).name == None
+
+@pytest.mark.django_db
+class TestGetHotelInformation:
+
+	def test_get_hotel_information(self, client, get_login_headers):
+
+		headers = get_login_headers()
+
+		url     = reverse("get_hotel_information")
+
+		response = client.get(url, **headers)
+
+		assert response.status_code == 200

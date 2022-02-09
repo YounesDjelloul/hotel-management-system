@@ -445,3 +445,65 @@ class TestManageHotelRoomExtension:
 
 		assert response.status_code == 200
 		assert HotelRoomExtension.objects.filter(content="Food").exists() == False
+
+
+@pytest.mark.django_db
+class TestGetHotelsView:
+
+	def setUp(self):
+
+		user = User.objects.create_user(email="younes@gm.com", password="krgjh", stripe_account="sd,fskdflij")
+
+		user.hotel.name = "Hotel 1"
+		user.hotel.stars = 5
+		user.hotel.city = "Istanbul"
+
+		user.hotel.save()
+
+	def test_get_hotels_with_invalid_information(self, client):
+
+		self.setUp()
+
+		url     = reverse("get_hotels")
+
+		data    = {
+
+			#"city": "istanbul" # city is missing
+			"max_price": 100
+		}
+
+		response = client.get(url, data)
+
+		assert response.status_code == 400
+
+	def test_get_hotels_with_valid_information(self, client):
+
+		self.setUp()
+
+		url   = reverse("get_hotels")
+
+		data  = {
+
+			"city": "istanbul",
+			"max_price": 100
+		}
+
+		response = client.get(url, data)
+
+		assert response.status_code == 200
+
+
+	def test_get_hotels_without_max_price(self, client):
+
+		self.setUp()
+
+		url  = reverse("get_hotels")
+
+		data = {
+
+			"city": "istanbul"
+		}
+
+		response = client.get(url, data)
+
+		assert response.status_code == 200
