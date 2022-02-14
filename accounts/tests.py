@@ -75,9 +75,9 @@ class TestCreateHotel:
 		response = client.post(url, data, format='json')
 
 		assert response.status_code == 201
-		assert User.objects.get(id=1).email == "younesdjelloul14@gmail.com"
-		assert User.objects.get(id=1).stripe_account != None
-		assert User.objects.get(id=1).hotel.name == None
+		assert User.objects.all()[0].email == "younesdjelloul14@gmail.com"
+		assert User.objects.all()[0].stripe_account != None
+		assert User.objects.all()[0].hotel.name == None
 
 @pytest.mark.django_db
 class TestUpdateHotelInformation:
@@ -86,7 +86,7 @@ class TestUpdateHotelInformation:
 
 		headers = get_login_headers()
 
-		url  = reverse('update_hotel_information')
+		url  = reverse('manage_hotel_information')
 		data = {
 
 			"name": "EL DJAZAIR",
@@ -101,7 +101,7 @@ class TestUpdateHotelInformation:
 
 		headers = get_login_headers()
 
-		url  = reverse('update_hotel_information')
+		url  = reverse('manage_hotel_information')
 		data = {
 
 			"name": "",
@@ -119,8 +119,28 @@ class TestGetHotelInformation:
 
 		headers = get_login_headers()
 
-		url     = reverse("get_hotel_information")
+		url     = reverse("manage_hotel_information")
 
 		response = client.get(url, **headers)
 
 		assert response.status_code == 200
+
+@pytest.mark.django_db
+class TestActivateUser:
+
+	def test_activate_user(self, client, get_login_headers):
+
+		headers  = get_login_headers()
+		url      = reverse('activate_user', kwargs={'id': User.objects.all()[0].id})
+
+		response = client.get(url)
+
+		assert response.status_code == 200
+
+	def test_activate_user_with_invalid_information(self, client, get_login_headers):
+		headers  = get_login_headers()
+		url      = reverse('activate_user', kwargs={'id': 5})
+
+		response = client.get(url)
+
+		assert response.status_code == 400

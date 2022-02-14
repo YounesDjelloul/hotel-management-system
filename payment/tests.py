@@ -40,7 +40,7 @@ class TestPaymentIntent:
 
 	def setUp(self):
 
-		user            = User.objects.get(id=1)
+		user            = User.objects.all()[0]
 		hotel_room_type = HotelRoomType.objects.create(hotel=user.hotel, room_type="Single", price=140.00)
 
 		return HotelRoom.objects.create(room_type=hotel_room_type, title="Hello Title", description="Hello Desc", room_number=102)

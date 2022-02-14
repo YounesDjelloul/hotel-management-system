@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.mail import send_mail
+import uuid
 
 # Create your models here.
 
@@ -29,8 +31,10 @@ class User(AbstractUser):
 	last_name  = None
 	username   = None
 
+	id             = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
 	email          = models.EmailField(unique=True)
 	stripe_account = models.CharField(max_length=200, default="")
+	status         = models.BooleanField(default=False)
 
 	USERNAME_FIELD  = 'email'
 	REQUIRED_FIELDS = []
@@ -59,3 +63,13 @@ class Hotel(models.Model):
 def create_hotel(**kwargs):
 	if kwargs['created']:
 		Hotel.objects.create(user=kwargs['instance'])
+
+		uuid = kwargs['instance'].id
+
+		send_mail(
+	        subject = 'Activate Your Account',
+	        message = f'Here is a link to activate your account.\n http://127.0.0.1:8000/api/v1/accounts/activate/{str(uuid)}/',
+	        from_email = 'younesdjelloul14@gmail.com',
+	        recipient_list = [kwargs['instance'].email],
+	        fail_silently=False,
+	    )

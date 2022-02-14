@@ -318,7 +318,7 @@ class ValidateHotelReservation(APIView):
 	def post(self, request, id):
 
 		if not id:
-			return Response("Reservation ID is required")
+			return Response("Invalid information", status=400)
 
 		reservation = HotelReservation.objects.get(id=id)
 

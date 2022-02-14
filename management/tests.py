@@ -191,7 +191,7 @@ class TestManageHotelRoomType:
 
 		headers = get_login_headers()
 		
-		user            = User.objects.get(id=1)
+		user            = User.objects.all()[0]
 		hotel_room_type = HotelRoomType.objects.create(hotel=user.hotel, room_type="Single", price=140.00)
 
 		url      = reverse("manage_hotel_room_type", kwargs={"id": None})
@@ -235,7 +235,7 @@ class TestManageHotelRoomType:
 	def test_delete_hotel_room_type(self, client, get_login_headers):
 
 		headers         = get_login_headers()
-		user            = User.objects.get(id=1)
+		user            = User.objects.all()[0]
 		hotel_room_type = HotelRoomType.objects.create(hotel=user.hotel, room_type="Single", price=140.00)
 
 		url      = reverse("manage_hotel_room_type", kwargs={"id": hotel_room_type.id})
@@ -250,7 +250,7 @@ class TestManageHotelRoomType:
 class TestManageHotelRoom:
 
 	def create_room_type(self):
-		user = User.objects.get(id=1)
+		user = User.objects.all()[0]
 		return HotelRoomType.objects.create(hotel=user.hotel, room_type="Single", price=140.00)
 
 	def test_get_all_hotel_rooms(self, client, get_login_headers):
@@ -315,7 +315,7 @@ class TestManageHotelRoomPhoto:
 
 	def create_room(self):
 
-		user            = User.objects.get(id=1)
+		user            = User.objects.all()[0]
 		hotel_room_type = HotelRoomType.objects.create(hotel=user.hotel, room_type="Single", price=140.00)
 
 		return HotelRoom.objects.create(room_type=hotel_room_type, title="Hello Title", description="Hello Desc", room_number=102)
@@ -383,7 +383,7 @@ class TestManageHotelRoomExtension:
 
 	def create_room(self):
 
-		user            = User.objects.get(id=1)
+		user            = User.objects.all()[0]
 		hotel_room_type = HotelRoomType.objects.create(hotel=user.hotel, room_type="Single", price=140.00)
 
 		return HotelRoom.objects.create(room_type=hotel_room_type, title="Hello Title", description="Hello Desc", room_number=102)

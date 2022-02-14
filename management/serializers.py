@@ -161,4 +161,4 @@ class ReservationSerializer(serializers.ModelSerializer):
 		return attrs
 
 	def create(self, validated_data):
-		return HotelRoomReservation.objects.create(**validated_data)
+		return HotelRoomReservation.objects.create(**validated_data).id
