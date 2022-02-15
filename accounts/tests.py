@@ -1,5 +1,6 @@
 import pytest
 from django.urls import reverse
+from django.core import mail
 from .models import *
 import json
 
@@ -124,6 +125,7 @@ class TestGetHotelInformation:
 		response = client.get(url, **headers)
 
 		assert response.status_code == 200
+		assert len(mail.outbox) == 1
 
 @pytest.mark.django_db
 class TestActivateUser:
@@ -144,3 +146,4 @@ class TestActivateUser:
 		response = client.get(url)
 
 		assert response.status_code == 400
+		assert len(mail.outbox) == 0

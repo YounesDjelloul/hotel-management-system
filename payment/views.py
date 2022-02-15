@@ -30,4 +30,6 @@ class CreatePaymentIntentView(APIView):
 			stripe_account=request.user.stripe_account
 		)
 
-		return Response({"client_secret": payment_intent.client_secret, "reservation_id": serializer.data}, status=201)
+		print(serializer.data['id'])
+
+		return Response({"client_secret": payment_intent.client_secret, "reservation_id": serializer.data['id']}, status=201)

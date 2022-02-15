@@ -66,3 +66,24 @@ class TestPaymentIntent:
 		assert response.status_code == 201
 		assert HotelRoomReservation.objects.filter(id=1).exists() == True
 		assert 'client_secret' in json.loads(response.content)
+
+	def test_create_payment_intent_with_invalid_information(self, client, get_login_headers):
+
+		headers = get_login_headers()
+
+		self.setUp()
+
+		url     = reverse('create_payment_intent')
+		data    = {
+
+			"check_in": "2022-01-22",
+			"check_out": "2022-01-25",
+			"phone_number": "05505654525",
+			"room_number": 102
+		}
+
+		response = client.post(url, data, **headers)
+
+		assert response.status_code == 400
+		assert HotelRoomReservation.objects.filter(id=1).exists() == False
+		assert 'client_secret' not in json.loads(response.content)
