@@ -49,6 +49,7 @@ class TestCreateHotel:
 		response = client.post(url, data, format='json')
 
 		assert response.status_code == 400
+		assert len(mail.outbox) == 0
 
 	def test_create_hotel_with_no_email(self, client):
 
@@ -62,6 +63,7 @@ class TestCreateHotel:
 		response = client.post(url, data, format='json')
 
 		assert response.status_code == 400
+		assert len(mail.outbox) == 0
 
 	def test_create_hotel_with_valid_information(self, client):
 
@@ -79,6 +81,8 @@ class TestCreateHotel:
 		assert User.objects.all()[0].email == "younesdjelloul14@gmail.com"
 		assert User.objects.all()[0].stripe_account != None
 		assert User.objects.all()[0].hotel.name == None
+
+		assert len(mail.outbox) == 1
 
 @pytest.mark.django_db
 class TestUpdateHotelInformation:
@@ -146,4 +150,3 @@ class TestActivateUser:
 		response = client.get(url)
 
 		assert response.status_code == 400
-		assert len(mail.outbox) == 0
